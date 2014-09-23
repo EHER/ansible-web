@@ -27,6 +27,14 @@
     - /etc/php5/fpm/php.ini
   tags: config
 
+  # Bug: it duplicates the line
+- name: ensure php upload_max_filesize is set
+  action: lineinfile dest={{ item }} state=present line='upload_max_filesize = 5M' regexp='/upload_max_filesize\ *=/'
+  with_items:
+    - /etc/php5/cli/php.ini
+    - /etc/php5/fpm/php.ini
+  tags: config
+
 - name: ensure default website is disabled
   action: file path=/etc/nginx/sites-enabled/default state=absent
   tags: config
